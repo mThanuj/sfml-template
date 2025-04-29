@@ -34,3 +34,18 @@ target_include_directories(${PROJECT_NAME} PRIVATE src/)
 
 # Link against SFML (Graphics includes Window and System)
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
+
+# Debug and Release specific options
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  # Debug-specific settings
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+        COMPILE_DEFINITIONS "DEBUG"
+        CXX_FLAGS "-g" # Enable debugging symbols
+    )
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Release-specific settings
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+        COMPILE_DEFINITIONS "NDEBUG"
+        CXX_FLAGS "-O3" # Enable optimizations for release
+    )
+endif()
