@@ -1,18 +1,38 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <optional>
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode({200, 200}), "SFML Works!");
-  sf::CircleShape shape(100.f);
-  shape.setFillColor(sf::Color::Green);
+  unsigned int width = 640;
+  unsigned int height = 360;
 
-  while (window.isOpen()) {
-    while (const std::optional event = window.pollEvent()) {
-      if (event->is<sf::Event::Closed>())
-        window.close();
+  sf::RenderWindow *window = new sf::RenderWindow(
+      sf::VideoMode({width, height}), "SFML Window - My Window");
+
+  while (window->isOpen()) {
+    while (const std::optional event = window->pollEvent()) {
+      if (event->is<sf::Event::Closed>()) {
+        window->close();
+      } else if (const auto *keypressed =
+                     event->getIf<sf::Event::KeyPressed>()) {
+        if (keypressed->scancode == sf::Keyboard::Scancode::Escape) {
+          window->close();
+        }
+      }
     }
 
-    window.clear();
-    window.draw(shape);
-    window.display();
+    // Rendering
+
+    window->clear(sf::Color(0xFF8800FF));
+
+    // Drawing
+
+    window->display();
   }
+
+  delete window;
+  return 0;
 }
