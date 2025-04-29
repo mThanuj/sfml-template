@@ -1,4 +1,8 @@
 #!/bin/bash
-cmake --build build --target main
+set -e
+
+cmake -S . -B build
+
+cmake --build build
 
 ./build/bin/main
